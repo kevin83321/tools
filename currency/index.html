@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Converter</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans TC",
+        sans-serif;
+      color: #37352f;
+    }
+
+    body {
+      padding: 12px;
+    }
+
+    .converter {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 22px;
+
+      background: #ffffff;
+      border: 1px solid rgba(55, 53, 47, 0.12);
+      border-radius: 12px;
+
+      box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.04),
+        0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #787774;
+      margin-bottom: 6px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 44px;
+
+      border: 1px solid rgba(55, 53, 47, 0.16);
+      border-radius: 7px;
+
+      background: #ffffff;
+      color: #37352f;
+
+      padding: 0 12px;
+      font-size: 15px;
+
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #9b9a97;
+      box-shadow: 0 0 0 2px rgba(55, 53, 47, 0.06);
+    }
+
+    .currency-row {
+      display: grid;
+      grid-template-columns: 1fr 46px 1fr;
+      align-items: end;
+      gap: 10px;
+
+      margin-top: 16px;
+    }
+
+    .swap-button {
+      height: 44px;
+      border: none;
+      border-radius: 7px;
+
+      background: #f1f1ef;
+      color: #37352f;
+
+      font-size: 20px;
+      cursor: pointer;
+
+      transition: 0.15s;
+    }
+
+    .swap-button:hover {
+      background: #e7e7e5;
+    }
+
+    .result {
+      margin-top: 22px;
+      padding: 18px;
+
+      background: #f7f7f5;
+      border-radius: 8px;
+
+      text-align: center;
+    }
+
+    .result-label {
+      font-size: 13px;
+      color: #787774;
+      margin-bottom: 6px;
+    }
+
+    .result-value {
+      font-size: 30px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .rate {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #787774;
+    }
+
+    .meta {
+      margin-top: 5px;
+      font-size: 11px;
+      color: #9b9a97;
+    }
+
+    .refresh-button {
+      width: 100%;
+      height: 42px;
+
+      margin-top: 16px;
+
+      border: none;
+      border-radius: 7px;
+
+      background: #37352f;
+      color: white;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      transition: 0.15s;
+    }
+
+    .refresh-button:hover {
+      background: #2f2e2a;
+    }
+
+    .refresh-button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .error {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #d44c47;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 6px;
+      }
+
+      .converter {
+        padding: 16px;
+      }
+
+      .result-value {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="converter">
+
+  <div class="title">💱 Currency Converter</div>
+
+  <label class="label" for="amount">Amount</label>
+
+  <input
+    id="amount"
+    type="number"
+    value="1000"
+    min="0"
+    step="any"
+    inputmode="decimal"
+  />
+
+  <div class="currency-row">
+
+    <div>
+      <label class="label" for="fromCurrency">From</label>
+
+      <select id="fromCurrency">
+        <option value="TWD" selected>🇹🇼 TWD - New Taiwan Dollar</option>
+        <option value="USD">🇺🇸 USD - US Dollar</option>
+        <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+        <option value="EUR">🇪🇺 EUR - Euro</option>
+        <option value="HKD">🇭🇰 HKD - Hong Kong Dollar</option>
+        <option value="MOP">🇲🇴 MOP - Macanese Pataca</option>
+        <option value="CNY">🇨🇳 CNY - Chinese Yuan</option>
+        <option value="KRW">🇰🇷 KRW - South Korean Won</option>
+        <option value="GBP">🇬🇧 GBP - British Pound</option>
+        <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
+        <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+        <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+        <option value="THB">🇹🇭 THB - Thai Baht</option>
+        <option value="MYR">🇲🇾 MYR - Malaysian Ringgit</option>
+      </select>
+    </div>
+
+    <button
+      class="swap-button"
+      id="swapButton"
+      type="button"
+      title="交換幣別"
+    >
+      ⇄
+    </button>
+
+    <div>
+      <label class="label" for="toCurrency">To</label>
+
+      <select id="toCurrency">
+        <option value="TWD">🇹🇼 TWD - New Taiwan Dollar</option>
+        <option value="USD">🇺🇸 USD - US Dollar</option>
+        <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
+        <option value="EUR">🇪🇺 EUR - Euro</option>
+        <option value="HKD">🇭🇰 HKD - Hong Kong Dollar</option>
+        <option value="MOP" selected>🇲🇴 MOP - Macanese Pataca</option>
+        <option value="CNY">🇨🇳 CNY - Chinese Yuan</option>
+        <option value="KRW">🇰🇷 KRW - South Korean Won</option>
+        <option value="GBP">🇬🇧 GBP - British Pound</option>
+        <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
+        <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
+        <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
+        <option value="THB">🇹🇭 THB - Thai Baht</option>
+        <option value="MYR">🇲🇾 MYR - Malaysian Ringgit</option>
+      </select>
+    </div>
+
+  </div>
+
+  <div class="result">
+
+    <div class="result-label">
+      Converted Amount
+    </div>
+
+    <div
+      class="result-value"
+      id="resultValue"
+    >
+      --
+    </div>
+
+    <div
+      class="rate"
+      id="rateValue"
+    >
+      --
+    </div>
+
+    <div
+      class="meta"
+      id="updateTime"
+    >
+      --
+    </div>
+
+  </div>
+
+  <button
+    class="refresh-button"
+    id="refreshButton"
+    type="button"
+  >
+    ↻ Refresh Rate
+  </button>
+
+  <div
+    class="error"
+    id="errorMessage"
+  ></div>
+
+</div>
+
+
+<script>
+
+  const API_BASE = "https://api.frankfurter.dev/v1";
+
+  const amountInput =
+    document.getElementById("amount");
+
+  const fromCurrency =
+    document.getElementById("fromCurrency");
+
+  const toCurrency =
+    document.getElementById("toCurrency");
+
+  const resultValue =
+    document.getElementById("resultValue");
+
+  const rateValue =
+    document.getElementById("rateValue");
+
+  const updateTime =
+    document.getElementById("updateTime");
+
+  const refreshButton =
+    document.getElementById("refreshButton");
+
+  const swapButton =
+    document.getElementById("swapButton");
+
+  const errorMessage =
+    document.getElementById("errorMessage");
+
+
+  const currencySymbols = {
+    TWD: "NT$",
+    USD: "$",
+    JPY: "¥",
+    EUR: "€",
+    HKD: "HK$",
+    MOP: "MOP$",
+    CNY: "¥",
+    KRW: "₩",
+    GBP: "£",
+    SGD: "S$",
+    AUD: "A$",
+    CAD: "C$",
+    THB: "฿",
+    MYR: "RM"
+  };
+
+
+  function formatNumber(value) {
+
+    return new Intl.NumberFormat(
+      "zh-TW",
+      {
+        maximumFractionDigits: 2
+      }
+    ).format(value);
+
+  }
+
+
+  function formatRate(value) {
+
+    return new Intl.NumberFormat(
+      "zh-TW",
+      {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 6
+      }
+    ).format(value);
+
+  }
+
+
+  async function convertCurrency() {
+
+    const amount =
+      parseFloat(amountInput.value);
+
+    const from =
+      fromCurrency.value;
+
+    const to =
+      toCurrency.value;
+
+
+    errorMessage.textContent = "";
+
+
+    if (
+      Number.isNaN(amount) ||
+      amount < 0
+    ) {
+
+      errorMessage.textContent =
+        "請輸入有效金額";
+
+      return;
+
+    }
+
+
+    refreshButton.disabled = true;
+
+    refreshButton.textContent =
+      "Updating...";
+
+
+    try {
+
+      /*
+       * 相同幣別不需要呼叫 API
+       */
+
+      if (from === to) {
+
+        resultValue.textContent =
+          `${currencySymbols[to] ?? ""} ${formatNumber(amount)}`;
+
+        rateValue.textContent =
+          `1 ${from} = 1 ${to}`;
+
+        updateTime.textContent =
+          "Same currency";
+
+        return;
+
+      }
+
+
+      /*
+       * 取得 1 單位來源貨幣的匯率
+       */
+
+      const url =
+        `${API_BASE}/latest?base=${from}&symbols=${to}`;
+
+
+      const response =
+        await fetch(
+          url,
+          {
+            cache: "no-store"
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          `HTTP ${response.status}`
+        );
+
+      }
+
+
+      const data =
+        await response.json();
+
+
+      const rate =
+        data.rates[to];
+
+
+      if (!rate) {
+
+        throw new Error(
+          "Rate not available"
+        );
+
+      }
+
+
+      const converted =
+        amount * rate;
+
+
+      /*
+       * 顯示換算結果
+       */
+
+      resultValue.textContent =
+        `${currencySymbols[to] ?? ""} ${formatNumber(converted)}`;
+
+
+      /*
+       * 顯示匯率
+       */
+
+      rateValue.textContent =
+        `1 ${from} = ${formatRate(rate)} ${to}`;
+
+
+      /*
+       * Frankfurter 回傳的匯率日期
+       */
+
+      updateTime.textContent =
+        `Rate date: ${data.date}`;
+
+
+    }
+    catch (error) {
+
+      console.error(error);
+
+      resultValue.textContent =
+        "--";
+
+      rateValue.textContent =
+        "--";
+
+      updateTime.textContent =
+        "--";
+
+      errorMessage.textContent =
+        "無法取得匯率，請稍後再試。";
+
+    }
+    finally {
+
+      refreshButton.disabled = false;
+
+      refreshButton.textContent =
+        "↻ Refresh Rate";
+
+    }
+
+  }
+
+
+  /*
+   * Refresh
+   */
+
+  refreshButton.addEventListener(
+    "click",
+    convertCurrency
+  );
+
+
+  /*
+   * 交換幣別
+   */
+
+  swapButton.addEventListener(
+    "click",
+    () => {
+
+      const oldFrom =
+        fromCurrency.value;
+
+      fromCurrency.value =
+        toCurrency.value;
+
+      toCurrency.value =
+        oldFrom;
+
+      convertCurrency();
+
+    }
+  );
+
+
+  /*
+   * 改變幣別立即重新計算
+   */
+
+  fromCurrency.addEventListener(
+    "change",
+    convertCurrency
+  );
+
+
+  toCurrency.addEventListener(
+    "change",
+    convertCurrency
+  );
+
+
+  /*
+   * 金額輸入時重新計算
+   *
+   * 加 debounce，避免每打一個字
+   * 都立即 call API。
+   */
+
+  let inputTimer;
+
+
+  amountInput.addEventListener(
+    "input",
+    () => {
+
+      clearTimeout(inputTimer);
+
+      inputTimer =
+        setTimeout(
+          convertCurrency,
+          400
+        );
+
+    }
+  );
+
+
+  /*
+   * Enter 立即換算
+   */
+
+  amountInput.addEventListener(
+    "keydown",
+    event => {
+
+      if (event.key === "Enter") {
+
+        clearTimeout(inputTimer);
+
+        convertCurrency();
+
+      }
+
+    }
+  );
+
+
+  /*
+   * Page load
+   */
+
+  convertCurrency();
+
+</script>
+
+</body>
+</html>
