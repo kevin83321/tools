@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Currency Converter</title>
 
   <style>
@@ -10,17 +11,22 @@
       box-sizing: border-box;
     }
 
-    html, body {
+    html,
+    body {
       margin: 0;
       padding: 0;
+
       background: transparent;
+
       font-family:
         Inter,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
         "Noto Sans TC",
+        Arial,
         sans-serif;
+
       color: #37352f;
     }
 
@@ -28,13 +34,19 @@
       padding: 12px;
     }
 
+    /* ================================
+       Main Card
+       ================================ */
+
     .converter {
       width: 100%;
-      max-width: 560px;
+      max-width: 620px;
+
       margin: 0 auto;
       padding: 22px;
 
       background: #ffffff;
+
       border: 1px solid rgba(55, 53, 47, 0.12);
       border-radius: 12px;
 
@@ -44,60 +56,86 @@
     }
 
     .title {
+      margin-bottom: 22px;
+
       font-size: 20px;
       font-weight: 700;
-      margin-bottom: 20px;
     }
+
+    /* ================================
+       Form
+       ================================ */
 
     .label {
       display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: #787774;
+
       margin-bottom: 6px;
+
+      color: #787774;
+
+      font-size: 13px;
+      font-weight: 500;
     }
 
     input,
     select {
       width: 100%;
-      height: 44px;
+      height: 50px;
 
-      border: 1px solid rgba(55, 53, 47, 0.16);
-      border-radius: 7px;
+      padding: 0 14px;
 
       background: #ffffff;
       color: #37352f;
 
-      padding: 0 12px;
-      font-size: 15px;
+      border: 1px solid rgba(55, 53, 47, 0.16);
+      border-radius: 8px;
 
       outline: none;
+
+      font-size: 16px;
+
+      transition: 0.15s;
     }
 
     input:focus,
     select:focus {
       border-color: #9b9a97;
-      box-shadow: 0 0 0 2px rgba(55, 53, 47, 0.06);
+
+      box-shadow:
+        0 0 0 2px rgba(55, 53, 47, 0.06);
     }
 
     .currency-row {
       display: grid;
-      grid-template-columns: 1fr 46px 1fr;
-      align-items: end;
-      gap: 10px;
 
-      margin-top: 16px;
+      grid-template-columns:
+        minmax(0, 1fr)
+        50px
+        minmax(0, 1fr);
+
+      align-items: end;
+
+      gap: 12px;
+
+      margin-top: 18px;
     }
 
+    /* ================================
+       Swap button
+       ================================ */
+
     .swap-button {
-      height: 44px;
+      width: 50px;
+      height: 50px;
+
       border: none;
-      border-radius: 7px;
+      border-radius: 8px;
 
       background: #f1f1ef;
       color: #37352f;
 
-      font-size: 20px;
+      font-size: 25px;
+
       cursor: pointer;
 
       transition: 0.15s;
@@ -107,51 +145,78 @@
       background: #e7e7e5;
     }
 
+    .swap-button:active {
+      transform: scale(0.96);
+    }
+
+    /* ================================
+       Result
+       ================================ */
+
     .result {
-      margin-top: 22px;
-      padding: 18px;
+      margin-top: 24px;
+      padding: 22px 16px;
+
+      min-height: 160px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
 
       background: #f7f7f5;
-      border-radius: 8px;
+
+      border-radius: 9px;
 
       text-align: center;
     }
 
     .result-label {
-      font-size: 13px;
+      margin-bottom: 10px;
+
       color: #787774;
-      margin-bottom: 6px;
+
+      font-size: 13px;
     }
 
     .result-value {
       font-size: 30px;
       font-weight: 700;
+
       word-break: break-word;
     }
 
     .rate {
       margin-top: 10px;
-      font-size: 13px;
+
       color: #787774;
+
+      font-size: 14px;
     }
 
     .meta {
-      margin-top: 5px;
-      font-size: 11px;
+      margin-top: 6px;
+
       color: #9b9a97;
+
+      font-size: 11px;
     }
+
+    /* ================================
+       Refresh
+       ================================ */
 
     .refresh-button {
       width: 100%;
-      height: 42px;
+      height: 46px;
 
-      margin-top: 16px;
+      margin-top: 18px;
 
       border: none;
-      border-radius: 7px;
+      border-radius: 8px;
 
       background: #37352f;
-      color: white;
+      color: #ffffff;
 
       font-size: 14px;
       font-weight: 600;
@@ -165,19 +230,38 @@
       background: #2f2e2a;
     }
 
+    .refresh-button:active {
+      transform: scale(0.99);
+    }
+
     .refresh-button:disabled {
       opacity: 0.6;
+
       cursor: wait;
     }
 
+    /* ================================
+       Error
+       ================================ */
+
     .error {
+      min-height: 18px;
+
       margin-top: 12px;
-      font-size: 12px;
+
       color: #d44c47;
+
+      font-size: 12px;
+
       text-align: center;
     }
 
-    @media (max-width: 480px) {
+    /* ================================
+       Mobile / narrow Notion block
+       ================================ */
+
+    @media (max-width: 500px) {
+
       body {
         padding: 6px;
       }
@@ -186,20 +270,40 @@
         padding: 16px;
       }
 
+      .currency-row {
+        grid-template-columns: 1fr;
+      }
+
+      .swap-button {
+        width: 100%;
+        height: 40px;
+      }
+
       .result-value {
-        font-size: 25px;
+        font-size: 26px;
       }
     }
   </style>
 </head>
 
+
 <body>
 
 <div class="converter">
 
-  <div class="title">💱 Currency Converter</div>
+  <div class="title">
+    💱 Currency Converter
+  </div>
 
-  <label class="label" for="amount">Amount</label>
+
+  <!-- Amount -->
+
+  <label
+    class="label"
+    for="amount"
+  >
+    Amount
+  </label>
 
   <input
     id="amount"
@@ -208,62 +312,171 @@
     min="0"
     step="any"
     inputmode="decimal"
+    autocomplete="off"
   />
+
+
+  <!-- Currency selection -->
 
   <div class="currency-row">
 
     <div>
-      <label class="label" for="fromCurrency">From</label>
+
+      <label
+        class="label"
+        for="fromCurrency"
+      >
+        From
+      </label>
 
       <select id="fromCurrency">
-        <option value="TWD" selected>🇹🇼 TWD - New Taiwan Dollar</option>
-        <option value="USD">🇺🇸 USD - US Dollar</option>
-        <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
-        <option value="EUR">🇪🇺 EUR - Euro</option>
-        <option value="HKD">🇭🇰 HKD - Hong Kong Dollar</option>
-        <option value="MOP">🇲🇴 MOP - Macanese Pataca</option>
-        <option value="CNY">🇨🇳 CNY - Chinese Yuan</option>
-        <option value="KRW">🇰🇷 KRW - South Korean Won</option>
-        <option value="GBP">🇬🇧 GBP - British Pound</option>
-        <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
-        <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
-        <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
-        <option value="THB">🇹🇭 THB - Thai Baht</option>
-        <option value="MYR">🇲🇾 MYR - Malaysian Ringgit</option>
+
+        <option value="TWD">
+          TWD - New Taiwan Dollar
+        </option>
+
+        <option value="USD">
+          USD - US Dollar
+        </option>
+
+        <option value="JPY">
+          JPY - Japanese Yen
+        </option>
+
+        <option value="EUR">
+          EUR - Euro
+        </option>
+
+        <option value="HKD">
+          HKD - Hong Kong Dollar
+        </option>
+
+        <option value="MOP">
+          MOP - Macanese Pataca
+        </option>
+
+        <option value="CNY">
+          CNY - Chinese Yuan
+        </option>
+
+        <option value="KRW">
+          KRW - South Korean Won
+        </option>
+
+        <option value="GBP">
+          GBP - British Pound
+        </option>
+
+        <option value="SGD">
+          SGD - Singapore Dollar
+        </option>
+
+        <option value="AUD">
+          AUD - Australian Dollar
+        </option>
+
+        <option value="CAD">
+          CAD - Canadian Dollar
+        </option>
+
+        <option value="THB">
+          THB - Thai Baht
+        </option>
+
+        <option value="MYR">
+          MYR - Malaysian Ringgit
+        </option>
+
       </select>
+
     </div>
+
 
     <button
       class="swap-button"
       id="swapButton"
       type="button"
-      title="交換幣別"
+      title="Swap currencies"
     >
       ⇄
     </button>
 
+
     <div>
-      <label class="label" for="toCurrency">To</label>
+
+      <label
+        class="label"
+        for="toCurrency"
+      >
+        To
+      </label>
 
       <select id="toCurrency">
-        <option value="TWD">🇹🇼 TWD - New Taiwan Dollar</option>
-        <option value="USD">🇺🇸 USD - US Dollar</option>
-        <option value="JPY">🇯🇵 JPY - Japanese Yen</option>
-        <option value="EUR">🇪🇺 EUR - Euro</option>
-        <option value="HKD">🇭🇰 HKD - Hong Kong Dollar</option>
-        <option value="MOP" selected>🇲🇴 MOP - Macanese Pataca</option>
-        <option value="CNY">🇨🇳 CNY - Chinese Yuan</option>
-        <option value="KRW">🇰🇷 KRW - South Korean Won</option>
-        <option value="GBP">🇬🇧 GBP - British Pound</option>
-        <option value="SGD">🇸🇬 SGD - Singapore Dollar</option>
-        <option value="AUD">🇦🇺 AUD - Australian Dollar</option>
-        <option value="CAD">🇨🇦 CAD - Canadian Dollar</option>
-        <option value="THB">🇹🇭 THB - Thai Baht</option>
-        <option value="MYR">🇲🇾 MYR - Malaysian Ringgit</option>
+
+        <option value="TWD">
+          TWD - New Taiwan Dollar
+        </option>
+
+        <option value="USD">
+          USD - US Dollar
+        </option>
+
+        <option value="JPY">
+          JPY - Japanese Yen
+        </option>
+
+        <option value="EUR">
+          EUR - Euro
+        </option>
+
+        <option value="HKD">
+          HKD - Hong Kong Dollar
+        </option>
+
+        <option value="MOP">
+          MOP - Macanese Pataca
+        </option>
+
+        <option value="CNY">
+          CNY - Chinese Yuan
+        </option>
+
+        <option value="KRW">
+          KRW - South Korean Won
+        </option>
+
+        <option value="GBP">
+          GBP - British Pound
+        </option>
+
+        <option value="SGD">
+          SGD - Singapore Dollar
+        </option>
+
+        <option value="AUD">
+          AUD - Australian Dollar
+        </option>
+
+        <option value="CAD">
+          CAD - Canadian Dollar
+        </option>
+
+        <option value="THB">
+          THB - Thai Baht
+        </option>
+
+        <option value="MYR">
+          MYR - Malaysian Ringgit
+        </option>
+
       </select>
+
     </div>
 
   </div>
+
+
+  <!-- Result -->
 
   <div class="result">
 
@@ -294,6 +507,9 @@
 
   </div>
 
+
+  <!-- Refresh -->
+
   <button
     class="refresh-button"
     id="refreshButton"
@@ -301,6 +517,9 @@
   >
     ↻ Refresh Rate
   </button>
+
+
+  <!-- Error -->
 
   <div
     class="error"
@@ -312,7 +531,45 @@
 
 <script>
 
-  const API_BASE = "https://api.frankfurter.dev/v1";
+  /*
+   * ==========================================
+   * Configuration
+   * ==========================================
+   */
+
+  const API_BASE =
+    "https://open.er-api.com/v6/latest";
+
+
+  /*
+   * Currency symbols
+   */
+
+  const currencySymbols = {
+
+    TWD: "NT$",
+    USD: "$",
+    JPY: "¥",
+    EUR: "€",
+    HKD: "HK$",
+    MOP: "MOP$",
+    CNY: "CN¥",
+    KRW: "₩",
+    GBP: "£",
+    SGD: "S$",
+    AUD: "A$",
+    CAD: "C$",
+    THB: "฿",
+    MYR: "RM"
+
+  };
+
+
+  /*
+   * ==========================================
+   * Elements
+   * ==========================================
+   */
 
   const amountInput =
     document.getElementById("amount");
@@ -342,29 +599,18 @@
     document.getElementById("errorMessage");
 
 
-  const currencySymbols = {
-    TWD: "NT$",
-    USD: "$",
-    JPY: "¥",
-    EUR: "€",
-    HKD: "HK$",
-    MOP: "MOP$",
-    CNY: "¥",
-    KRW: "₩",
-    GBP: "£",
-    SGD: "S$",
-    AUD: "A$",
-    CAD: "C$",
-    THB: "฿",
-    MYR: "RM"
-  };
+  /*
+   * ==========================================
+   * Formatting
+   * ==========================================
+   */
 
-
-  function formatNumber(value) {
+  function formatAmount(value) {
 
     return new Intl.NumberFormat(
       "zh-TW",
       {
+        minimumFractionDigits: 0,
         maximumFractionDigits: 2
       }
     ).format(value);
@@ -374,16 +620,142 @@
 
   function formatRate(value) {
 
+    /*
+     * 小匯率需要更多小數位，
+     * 例如 KRW -> TWD。
+     */
+
+    let digits = 6;
+
+    if (value >= 100) {
+      digits = 2;
+    }
+    else if (value >= 1) {
+      digits = 4;
+    }
+
     return new Intl.NumberFormat(
       "zh-TW",
       {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 6
+        minimumFractionDigits: 0,
+        maximumFractionDigits: digits
       }
     ).format(value);
 
   }
 
+
+  /*
+   * ==========================================
+   * Save user preference
+   * ==========================================
+   */
+
+  function saveSettings() {
+
+    try {
+
+      localStorage.setItem(
+        "currencyConverterFrom",
+        fromCurrency.value
+      );
+
+      localStorage.setItem(
+        "currencyConverterTo",
+        toCurrency.value
+      );
+
+    }
+    catch (error) {
+
+      /*
+       * localStorage may be unavailable
+       * inside some embedded environments.
+       */
+
+      console.warn(
+        "Unable to save settings:",
+        error
+      );
+
+    }
+
+  }
+
+
+  function loadSettings() {
+
+    try {
+
+      const savedFrom =
+        localStorage.getItem(
+          "currencyConverterFrom"
+        );
+
+      const savedTo =
+        localStorage.getItem(
+          "currencyConverterTo"
+        );
+
+
+      if (savedFrom) {
+        fromCurrency.value = savedFrom;
+      }
+      else {
+        fromCurrency.value = "TWD";
+      }
+
+
+      if (savedTo) {
+        toCurrency.value = savedTo;
+      }
+      else {
+        toCurrency.value = "USD";
+      }
+
+    }
+    catch (error) {
+
+      fromCurrency.value = "TWD";
+      toCurrency.value = "USD";
+
+    }
+
+  }
+
+
+  /*
+   * ==========================================
+   * Set loading state
+   * ==========================================
+   */
+
+  function setLoading(loading) {
+
+    refreshButton.disabled = loading;
+
+
+    if (loading) {
+
+      refreshButton.textContent =
+        "Updating...";
+
+    }
+    else {
+
+      refreshButton.textContent =
+        "↻ Refresh Rate";
+
+    }
+
+  }
+
+
+  /*
+   * ==========================================
+   * Convert
+   * ==========================================
+   */
 
   async function convertCurrency() {
 
@@ -400,10 +772,18 @@
     errorMessage.textContent = "";
 
 
+    /*
+     * Validate amount
+     */
+
     if (
       Number.isNaN(amount) ||
       amount < 0
     ) {
+
+      resultValue.textContent = "--";
+      rateValue.textContent = "--";
+      updateTime.textContent = "--";
 
       errorMessage.textContent =
         "請輸入有效金額";
@@ -413,47 +793,54 @@
     }
 
 
-    refreshButton.disabled = true;
+    /*
+     * Same currency
+     */
 
-    refreshButton.textContent =
-      "Updating...";
+    if (from === to) {
+
+      resultValue.textContent =
+        `${currencySymbols[to] ?? to} ${formatAmount(amount)}`;
+
+      rateValue.textContent =
+        `1 ${from} = 1 ${to}`;
+
+      updateTime.textContent =
+        "Same currency";
+
+      saveSettings();
+
+      return;
+
+    }
+
+
+    setLoading(true);
 
 
     try {
 
       /*
-       * 相同幣別不需要呼叫 API
-       */
-
-      if (from === to) {
-
-        resultValue.textContent =
-          `${currencySymbols[to] ?? ""} ${formatNumber(amount)}`;
-
-        rateValue.textContent =
-          `1 ${from} = 1 ${to}`;
-
-        updateTime.textContent =
-          "Same currency";
-
-        return;
-
-      }
-
-
-      /*
-       * 取得 1 單位來源貨幣的匯率
+       * Example:
+       *
+       * https://open.er-api.com/v6/latest/TWD
        */
 
       const url =
-        `${API_BASE}/latest?base=${from}&symbols=${to}`;
+        `${API_BASE}/${encodeURIComponent(from)}`;
 
 
       const response =
         await fetch(
           url,
           {
-            cache: "no-store"
+            method: "GET",
+
+            cache: "no-store",
+
+            headers: {
+              "Accept": "application/json"
+            }
           }
         );
 
@@ -461,7 +848,7 @@
       if (!response.ok) {
 
         throw new Error(
-          `HTTP ${response.status}`
+          `HTTP error ${response.status}`
         );
 
       }
@@ -471,33 +858,70 @@
         await response.json();
 
 
-      const rate =
-        data.rates[to];
+      /*
+       * API result validation
+       */
 
-
-      if (!rate) {
+      if (
+        data.result &&
+        data.result !== "success"
+      ) {
 
         throw new Error(
-          "Rate not available"
+          data["error-type"] ||
+          "Exchange rate API returned an error"
         );
 
       }
 
+
+      if (!data.rates) {
+
+        throw new Error(
+          "API response does not contain rates"
+        );
+
+      }
+
+
+      const rate =
+        data.rates[to];
+
+
+      if (
+        rate === undefined ||
+        rate === null
+      ) {
+
+        throw new Error(
+          `${to} is not available`
+        );
+
+      }
+
+
+      /*
+       * Conversion
+       */
 
       const converted =
         amount * rate;
 
 
       /*
-       * 顯示換算結果
+       * Result
        */
 
+      const symbol =
+        currencySymbols[to] ?? to;
+
+
       resultValue.textContent =
-        `${currencySymbols[to] ?? ""} ${formatNumber(converted)}`;
+        `${symbol} ${formatAmount(converted)}`;
 
 
       /*
-       * 顯示匯率
+       * Exchange rate
        */
 
       rateValue.textContent =
@@ -505,17 +929,68 @@
 
 
       /*
-       * Frankfurter 回傳的匯率日期
+       * Last API update
        */
 
-      updateTime.textContent =
-        `Rate date: ${data.date}`;
+      if (data.time_last_update_utc) {
 
+        const date =
+          new Date(
+            data.time_last_update_utc
+          );
+
+
+        if (!Number.isNaN(date.getTime())) {
+
+          updateTime.textContent =
+            `Rate updated: ${date.toLocaleString(
+              "zh-TW",
+              {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit"
+              }
+            )}`;
+
+        }
+        else {
+
+          updateTime.textContent =
+            data.time_last_update_utc;
+
+        }
+
+      }
+      else {
+
+        /*
+         * Browser refresh time fallback
+         */
+
+        updateTime.textContent =
+          `Refreshed: ${new Date().toLocaleString(
+            "zh-TW"
+          )}`;
+
+      }
+
+
+      /*
+       * Save selections
+       */
+
+      saveSettings();
 
     }
     catch (error) {
 
-      console.error(error);
+      console.error(
+        "Currency converter error:",
+        error
+      );
+
 
       resultValue.textContent =
         "--";
@@ -526,16 +1001,14 @@
       updateTime.textContent =
         "--";
 
+
       errorMessage.textContent =
-        "無法取得匯率，請稍後再試。";
+        `無法取得 ${from} → ${to} 匯率，請稍後再試。`;
 
     }
     finally {
 
-      refreshButton.disabled = false;
-
-      refreshButton.textContent =
-        "↻ Refresh Rate";
+      setLoading(false);
 
     }
 
@@ -543,31 +1016,66 @@
 
 
   /*
-   * Refresh
+   * ==========================================
+   * Swap currencies
+   * ==========================================
+   */
+
+  function swapCurrencies() {
+
+    const oldFrom =
+      fromCurrency.value;
+
+    fromCurrency.value =
+      toCurrency.value;
+
+    toCurrency.value =
+      oldFrom;
+
+
+    saveSettings();
+
+    convertCurrency();
+
+  }
+
+
+  /*
+   * ==========================================
+   * Debounce amount input
+   * ==========================================
+   */
+
+  let inputTimer = null;
+
+
+  function scheduleConversion() {
+
+    clearTimeout(inputTimer);
+
+
+    inputTimer =
+      setTimeout(
+        () => {
+
+          convertCurrency();
+
+        },
+        400
+      );
+
+  }
+
+
+  /*
+   * ==========================================
+   * Events
+   * ==========================================
    */
 
   refreshButton.addEventListener(
     "click",
-    convertCurrency
-  );
-
-
-  /*
-   * 交換幣別
-   */
-
-  swapButton.addEventListener(
-    "click",
     () => {
-
-      const oldFrom =
-        fromCurrency.value;
-
-      fromCurrency.value =
-        toCurrency.value;
-
-      toCurrency.value =
-        oldFrom;
 
       convertCurrency();
 
@@ -575,51 +1083,49 @@
   );
 
 
-  /*
-   * 改變幣別立即重新計算
-   */
+  swapButton.addEventListener(
+    "click",
+    () => {
+
+      swapCurrencies();
+
+    }
+  );
+
 
   fromCurrency.addEventListener(
     "change",
-    convertCurrency
+    () => {
+
+      saveSettings();
+
+      convertCurrency();
+
+    }
   );
 
 
   toCurrency.addEventListener(
     "change",
-    convertCurrency
+    () => {
+
+      saveSettings();
+
+      convertCurrency();
+
+    }
   );
-
-
-  /*
-   * 金額輸入時重新計算
-   *
-   * 加 debounce，避免每打一個字
-   * 都立即 call API。
-   */
-
-  let inputTimer;
 
 
   amountInput.addEventListener(
     "input",
     () => {
 
-      clearTimeout(inputTimer);
-
-      inputTimer =
-        setTimeout(
-          convertCurrency,
-          400
-        );
+      scheduleConversion();
 
     }
   );
 
-
-  /*
-   * Enter 立即換算
-   */
 
   amountInput.addEventListener(
     "keydown",
@@ -638,8 +1144,12 @@
 
 
   /*
-   * Page load
+   * ==========================================
+   * Start
+   * ==========================================
    */
+
+  loadSettings();
 
   convertCurrency();
 
